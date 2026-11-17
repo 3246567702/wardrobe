@@ -1,0 +1,529 @@
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.theme-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  width: 39px;
+  height: 39px;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.theme-button:hover {
+  background: var(--panel-soft);
+}
+.profile-intro {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+  padding: 26px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  margin-bottom: 25px;
+}
+.profile-monogram {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--line);
+  background: var(--photo-surface);
+  color: var(--subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.profile-intro h2 {
+  font-size: 25px;
+  margin: 7px 0 5px;
+}
+.profile-intro p {
+  font-size: 11px;
+  color: var(--subtle);
+}
+.profile-status {
+  font-size: 10px;
+  color: var(--subtle);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 6px 12px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.profile-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.profile-panel {
+  border: 1px solid var(--line);
+  padding: 25px;
+  border-radius: 3px;
+}
+.panel-heading h2 {
+  font-size: 22px;
+  margin-top: 7px;
+}
+.panel-heading .eyebrow {
+  font-size: 8px;
+  letter-spacing: 1.6px;
+}
+.profile-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 25px;
+  margin: 16px 0 0;
+}
+.profile-fields > div {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+.profile-fields dt {
+  font-size: 11px;
+  color: var(--subtle);
+  margin-bottom: 8px;
+}
+.profile-fields dd {
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.unfilled {
+  color: var(--unfilled);
+  font-size: 12px !important;
+}
+.measurements {
+  margin-top: 20px;
+}
+.measurements summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12px;
+  min-height: 38px;
+}
+.measurements summary::-webkit-details-marker {
+  display: none;
+}
+.measurements summary > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--subtle);
+}
+.measurements[open] summary svg {
+  transform: rotate(180deg);
+}
+.profile-note {
+  background: var(--panel-soft);
+  padding: 16px;
+  margin-top: 20px;
+}
+.profile-note h3 {
+  font-size: 11px;
+}
+.profile-note p {
+  font-size: 12px;
+  color: var(--subtle);
+  margin-top: 9px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.preference-group {
+  padding: 17px 0;
+  border-bottom: 1px solid var(--line);
+}
+.preference-group h3 {
+  font-size: 11px;
+  color: var(--subtle);
+  margin-bottom: 11px;
+}
+.preference-group > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 26px;
+  align-items: center;
+}
+.profile-photos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.profile-photo-card {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 0;
+}
+.photo-placeholder,
+.profile-photo-image {
+  aspect-ratio: 3/4;
+  background: var(--photo-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: var(--subtle);
+  position: relative;
+}
+.photo-placeholder:before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.photo-placeholder > span {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.photo-card-copy {
+  padding: 16px;
+}
+.photo-card-copy h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  gap: 8px;
+}
+.photo-card-copy p {
+  font-size: 10px;
+  color: var(--subtle);
+  margin-top: 7px;
+  overflow-wrap: anywhere;
+}
+.profile-photo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.profile-photo-view {
+  background: var(--photo-surface);
+  padding: 20px;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+}
+.profile-photo-view img {
+  max-height: 85vh;
+  object-fit: contain;
+  max-width: 100%;
+}
+.profile-documents {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.document-card {
+  border: 1px solid var(--line);
+  padding: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  border-radius: 3px;
+  min-width: 0;
+}
+.document-card:hover {
+  background: var(--panel);
+}
+.document-icon {
+  width: 43px;
+  height: 50px;
+  background: var(--panel-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--subtle);
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+.document-card > div {
+  flex: 1;
+  min-width: 0;
+}
+.document-card > svg {
+  margin-top: 17px;
+  color: var(--subtle);
+}
+.document-format {
+  color: var(--subtle);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.document-card h3 {
+  font-family: var(--serif);
+  font-size: 17px;
+  margin: 7px 0;
+}
+.document-card p {
+  font-size: 11px;
+  color: var(--subtle);
+}
+.profile-maintenance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--subtle);
+  padding: 27px 0 0;
+  line-height: 1.8;
+}
+.document-heading {
+  max-width: 760px;
+  margin: 8px auto 28px;
+}
+.document-heading h1 {
+  font-size: 31px;
+  margin: 9px 0;
+}
+.document-heading p {
+  font-size: 12px;
+  color: var(--subtle);
+}
+.document-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--subtle);
+  margin-top: 16px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.document-body {
+  max-width: 760px;
+  margin: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 32px 38px;
+  border-radius: 3px;
+  overflow-wrap: anywhere;
+}
+.document-body h2 {
+  font-size: 25px;
+  line-height: 1.8;
+  margin: 8px 0 20px;
+}
+.document-body h3 {
+  font-family: var(--serif);
+  font-size: 18px;
+  margin: 29px 0 13px;
+}
+.document-body h4 {
+  font-size: 15px;
+  margin: 24px 0 12px;
+}
+.document-body p,
+.document-body li {
+  font-size: 13px;
+  color: var(--subtle);
+  line-height: 2.1;
+}
+.document-body p {
+  margin: 15px 0;
+}
+.document-body ul,
+.document-body ol {
+  padding-left: 21px;
+  margin: 16px 0;
+}
+.document-body li + li {
+  margin-top: 8px;
+}
+.document-body pre {
+  background: var(--panel-soft);
+  padding: 15px;
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.8;
+  border: 1px solid var(--line);
+}
+.bottom-nav > a {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (max-width: 760px) {
+  .header-actions {
+    gap: 7px;
+  }
+  .theme-button {
+    width: 35px;
+    height: 35px;
+  }
+  .theme-button svg {
+    width: 17px;
+    height: 17px;
+  }
+  .site-header {
+    margin: 0 22px;
+    padding: 0;
+    gap: 8px;
+  }
+  .brand {
+    letter-spacing: 3px;
+  }
+  .brand small {
+    font-size: 6px;
+    letter-spacing: 1.1px;
+  }
+  .profile-intro {
+    padding: 19px 17px;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .profile-monogram {
+    width: 47px;
+    height: 47px;
+  }
+  .profile-monogram svg {
+    width: 23px;
+    height: 23px;
+  }
+  .profile-intro .eyebrow {
+    font-size: 7px;
+    letter-spacing: 1.2px;
+  }
+  .profile-intro h2 {
+    font-size: 21px;
+  }
+  .profile-intro p {
+    font-size: 10px;
+  }
+  .profile-status {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+  .profile-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .profile-panel {
+    padding: 21px;
+  }
+  .profile-fields {
+    gap: 0 20px;
+  }
+  .profile-fields dd {
+    font-size: 14px;
+  }
+  .profile-photos {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 12px;
+  }
+  .photo-card-copy {
+    padding: 13px;
+  }
+  .photo-card-copy h3 {
+    font-size: 12px;
+  }
+  .photo-card-copy p {
+    font-size: 10px;
+  }
+  .photo-placeholder > svg {
+    width: 31px;
+    height: 31px;
+  }
+  .photo-placeholder {
+    gap: 13px;
+  }
+  .profile-documents {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .document-card {
+    padding: 19px 17px;
+    gap: 14px;
+  }
+  .document-card h3 {
+    font-size: 17px;
+  }
+  .document-card p {
+    font-size: 11px;
+  }
+  .profile-maintenance {
+    font-size: 10px;
+    align-items: flex-start;
+  }
+  .profile-maintenance svg {
+    margin-top: 2px;
+  }
+  .document-heading {
+    margin-bottom: 22px;
+  }
+  .document-heading h1 {
+    font-size: 28px;
+  }
+  .document-body {
+    padding: 23px 20px;
+  }
+  .document-body h2 {
+    font-size: 22px;
+  }
+  .document-body h3 {
+    font-size: 17px;
+  }
+  .document-body p,
+  .document-body li {
+    font-size: 12px;
+  }
+  .bottom-nav {
+    gap: 0;
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+  .bottom-nav > a {
+    padding-left: 4px;
+    padding-right: 4px;
+    max-width: 105px;
+    min-width: 0;
+  }
+}
+@media (max-width: 360px) {
+  .site-header {
+    margin: 0 16px;
+  }
+  .brand {
+    font-size: 20px;
+    gap: 7px;
+  }
+  .brand-symbol {
+    width: 32px;
+    height: 32px;
+    font-size: 19px;
+  }
+  .brand small {
+    font-size: 5px;
+    letter-spacing: 0.9px;
+  }
+  .location-button {
+    padding: 8px;
+    gap: 4px;
+    font-size: 10px;
+  }
+  .theme-button {
+    width: 33px;
+    height: 33px;
+  }
+  .profile-intro .profile-status {
+    display: none;
+  }
+}

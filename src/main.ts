@@ -1,5 +1,15 @@
+import { escapeHtml as e } from "./markdown";
+import { asset, icon } from "./ui";
 import "./style.css";
-import { loadWardrobe } from "./data";
+import "./profile.css";
+import "./dark.css";
+import { loadWardrobe, loadProfile } from "./data";
+import {
+  renderProfile,
+  renderProfileDocument,
+  renderProfilePhoto,
+  loadDocument,
+} from "./profile";
 import type {
   City,
   Forecast,
@@ -8,6 +18,7 @@ import type {
   Scene,
   Wardrobe,
   WeatherDay,
+  PersonalProfile,
 } from "./types";
 import {
   categoryNames,
@@ -31,6 +42,11 @@ import {
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 let data: Wardrobe;
+let profile: PersonalProfile | null = null,
+  profileError = "";
+let theme =
+  document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+const documents = new Map<string, { text?: string; error?: string }>();
 let scene: Scene = readLocal("wardrobe.scene", "commute");
 if (!Object.hasOwn(sceneNames, scene)) scene = "commute";
 let city: City | null = readLocal<City | null>("wardrobe.city", null),
@@ -53,43 +69,6 @@ let selectedDate = "",
 let modal: HTMLDialogElement | null = null,
   searchRequest = 0,
   returnFocus: HTMLElement | null = null;
-const e = (value: unknown) =>
-  String(value ?? "").replace(
-    /[&<>"']/g,
-    (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        c
-      ]!,
-  );
-const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
-const icon = (name: string, size = 22) => {
-  const paths: Record<string, string> = {
-    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
-    cloud:
-      '<path d="M6 18a4 4 0 0 1-1-7.9 6.5 6.5 0 0 1 12.6-1.4A4.7 4.7 0 1 1 18 18Z"/>',
-    rain: '<path d="M6 15a4 4 0 0 1-1-7 6.5 6.5 0 0 1 12-1A4.5 4.5 0 0 1 18 15M7 18l-1 3m6-3-1 3m6-3-1 3"/>',
-    snow: '<path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M9 4l3 3 3-3M9 20l3-3 3 3"/>',
-    closet: '<path d="M4 3h16v18H4zM12 3v18M9 10v3m6-3v3"/>',
-    looks:
-      '<rect x="3" y="3" width="7" height="8" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="3" y="15" width="7" height="6" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/>',
-    arrow: '<path d="M4 12h15m-6-6 6 6-6 6"/>',
-    back: '<path d="m14 5-7 7 7 7"/>',
-    pin: '<path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2"/>',
-    chevron: '<path d="m8 10 4 4 4-4"/>',
-    search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
-    close: '<path d="m6 6 12 12M6 18 18 6"/>',
-    refresh:
-      '<path d="M20 7v5h-5M4 17v-5h5M5 8a7.5 7.5 0 0 1 12-3l3 4M4 15l3 4a7.5 7.5 0 0 0 12-3"/>',
-    spark:
-      '<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/>',
-    drop: '<path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z"/>',
-    check: '<path d="m5 12 4 4L19 6"/>',
-    wind: '<path d="M3 8h12a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h7"/>',
-    hanger:
-      '<path d="M10 7a2 2 0 1 1 3 1.7V11l8 5a2 2 0 0 1-1 4H4a2 2 0 0 1-1-4l10-5"/>',
-  };
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.spark}</svg>`;
-};
 function image(item: Item, extra = "") {
   return `<img src="${e(asset(item.image))}" alt="${e(item.name)}" ${extra}>`;
 }
@@ -131,7 +110,13 @@ function empty(title: string, message: string, action = "") {
   return `<div class="empty">${icon("hanger", 36)}<h3>${title}</h3><p>${message}</p>${action}</div>`;
 }
 function shell(content: string, active: string) {
-  return `<header class="site-header"><a class="brand" href="#/ootd"><span class="brand-symbol">衣</span><span>衣序<small>EVERYDAY WARDROBE</small></span></a><button class="location-button" id="choose-city">${icon("pin", 17)}<span>${city ? e(city.name) : "选择城市"}</span>${icon("chevron", 15)}</button></header><main id="main">${content}</main><footer class="site-footer"><span>把日常，穿成喜欢的样子。</span><span>${data.example ? "示例衣橱 · 单品插画可替换为实物照片" : "MY PERSONAL WARDROBE"}</span></footer><nav class="bottom-nav" aria-label="主导航"><a href="#/closet" ${active === "closet" ? 'aria-current="page"' : ""}>${icon("closet")}<span>衣橱</span></a><a href="#/ootd" ${active === "ootd" ? 'aria-current="page"' : ""}>${icon("sun")}<span>OOTD</span></a><a href="#/looks" ${active === "looks" ? 'aria-current="page"' : ""}>${icon("looks")}<span>搭配展示</span></a></nav>`;
+  const navigation = [
+    ["ootd", "sun", "OOTD"],
+    ["looks", "looks", "搭配展示"],
+    ["closet", "closet", "衣橱"],
+    ["info", "profile", "基础信息"],
+  ];
+  return `<header class="site-header"><a class="brand" href="#/ootd"><span class="brand-symbol">衣</span><span>衣序<small>EVERYDAY WARDROBE</small></span></a><div class="header-actions"><button class="location-button" id="choose-city">${icon("pin", 17)}<span>${city ? e(city.name) : "选择城市"}</span>${icon("chevron", 15)}</button><button id="toggle-theme" class="theme-button" aria-label="${theme === "dark" ? "切换到浅色主题" : "切换到深色主题"}" title="${theme === "dark" ? "浅色主题" : "深色主题"}" aria-pressed="${theme === "dark"}">${icon(theme === "dark" ? "sun" : "moon", 19)}</button></div></header><main id="main">${content}</main><footer class="site-footer"><span>把日常，穿成喜欢的样子。</span><span>${data.example ? "示例衣橱 · 单品插画可替换为实物照片" : "MY PERSONAL WARDROBE"}</span></footer><nav class="bottom-nav" aria-label="主导航">${navigation.map(([page, graphic, label]) => `<a href="#/${page}" ${active === page ? 'aria-current="page"' : ""}>${icon(graphic)}<span>${label}</span></a>`).join("")}</nav>`;
 }
 function weatherDays() {
   return datesFrom(cityDate(city?.timezone || "Asia/Shanghai")).map(
@@ -250,27 +235,75 @@ function renderLook(id: string) {
 function render() {
   if (!data) return;
   const route = location.hash.slice(1).split("/").filter(Boolean),
-    page = route[0] || "ootd";
+    page = route[0] || "ootd",
+    id = route[1];
   const active =
-    page === "item" || page === "closet"
+    page === "item"
       ? "closet"
-      : page === "look" || page === "looks"
+      : page === "look"
         ? "looks"
-        : "ootd";
-  const content =
-    page === "closet"
-      ? renderCloset()
-      : page === "looks"
-        ? renderLooks()
-        : page === "item"
-          ? renderItem(route[1])
-          : page === "look"
-            ? renderLook(route[1])
-            : renderOotd();
-  app.innerHTML = shell(content, active);
+        : ["info", "photo", "document"].includes(page)
+          ? "info"
+          : ["ootd", "looks", "closet"].includes(page)
+            ? page
+            : "ootd";
+  const views: Record<string, () => string> = {
+    ootd: renderOotd,
+    closet: renderCloset,
+    looks: renderLooks,
+    item: () => renderItem(id),
+    look: () => renderLook(id),
+    info: () => renderProfile(profile, profileError),
+    document: () =>
+      renderProfileDocument(profile, profileError, id, documents.get(id)),
+    photo: () => renderProfilePhoto(profile, profileError, id),
+  };
+  app.innerHTML = shell((views[page] || renderOotd)(), active);
   bind();
+  if (page === "document") void ensureDocument(id);
+}
+async function refreshProfile() {
+  profileError = "";
+  render();
+  try {
+    profile = await loadProfile();
+  } catch {
+    profileError = "个人资料暂时无法读取，请稍后重试。";
+  }
+  render();
+}
+async function ensureDocument(id: string) {
+  const doc = profile?.documents.find((d) => d.id === id);
+  if (!doc || doc.format !== "markdown" || documents.has(id)) return;
+  documents.set(id, {});
+  try {
+    documents.set(id, { text: await loadDocument(doc) });
+  } catch {
+    documents.set(id, { error: "请检查网络后重新加载。" });
+  }
+  render();
 }
 function bind() {
+  document.querySelector("#toggle-theme")?.addEventListener("click", () => {
+    theme = theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = theme;
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", theme === "dark" ? "#181c18" : "#f7f6f2");
+    saveLocal("wardrobe.theme", theme);
+    render();
+    document
+      .querySelector<HTMLButtonElement>("#toggle-theme")
+      ?.focus({ preventScroll: true });
+  });
+  document
+    .querySelector("#retry-profile")
+    ?.addEventListener("click", () => void refreshProfile());
+  document.querySelector("#retry-document")?.addEventListener("click", () => {
+    const id = location.hash.split("/")[2];
+    documents.delete(id);
+    render();
+  });
   document.querySelector("#choose-city")?.addEventListener("click", openCity);
   document.querySelector("#empty-city")?.addEventListener("click", openCity);
   for (const id of ["refresh-weather", "retry-weather"])
@@ -460,3 +493,5 @@ loadWardrobe()
       .querySelector("#reload")
       ?.addEventListener("click", () => location.reload());
   });
+
+void refreshProfile();

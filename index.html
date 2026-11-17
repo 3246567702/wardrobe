@@ -7,6 +7,25 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="theme-color" content="#f6f5f0" />
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          JSON.parse(localStorage.getItem("wardrobe.theme") || "null") ===
+          "dark"
+            ? "dark"
+            : "light";
+      } catch {
+        document.documentElement.dataset.theme = "light";
+      }
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute(
+          "content",
+          document.documentElement.dataset.theme === "dark"
+            ? "#181c18"
+            : "#f7f6f2",
+        );
+    </script>
     <meta
       name="description"
       content="让每一件衣服，都有出场的好天气。你的个人衣橱与七日穿搭。"

@@ -74,3 +74,40 @@ export interface Forecast {
   fetchedAt: number;
   days: WeatherDay[];
 }
+export interface ProfilePhoto {
+  id: string;
+  title: string;
+  description: string;
+  image: string | null;
+}
+export interface ProfileDocument {
+  id: string;
+  title: string;
+  description: string;
+  path: string;
+  format: "markdown" | "pdf";
+  updatedAt: string | null;
+}
+export interface PersonalProfile {
+  version: 1;
+  displayName: string | null;
+  heightCm: number | null;
+  weightKg: number | null;
+  sizes: { top: string | null; bottom: string | null; shoes: string | null };
+  measurements: {
+    shouldersCm: number | null;
+    chestCm: number | null;
+    waistCm: number | null;
+    hipsCm: number | null;
+  };
+  bodyNotes: string | null;
+  preferences: {
+    styleWords: string[];
+    favoriteColors: string[];
+    avoidColors: string[];
+    notes: string | null;
+  };
+  photos: ProfilePhoto[];
+  documents: ProfileDocument[];
+  updatedAt: string | null;
+}

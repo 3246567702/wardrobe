@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "displayName": null,
+  "heightCm": null,
+  "weightKg": null,
+  "sizes": { "top": null, "bottom": null, "shoes": null },
+  "measurements": {
+    "shouldersCm": null,
+    "chestCm": null,
+    "waistCm": null,
+    "hipsCm": null
+  },
+  "bodyNotes": null,
+  "preferences": {
+    "styleWords": [],
+    "favoriteColors": [],
+    "avoidColors": [],
+    "notes": null
+  },
+  "photos": [
+    {
+      "id": "portrait",
+      "title": "正脸照片",
+      "description": "自然光、正面清晰，方便建立个人穿搭参考。",
+      "image": null
+    },
+    {
+      "id": "body-front",
+      "title": "全身正面",
+      "description": "自然站立，完整展示身体比例。",
+      "image": null
+    },
+    {
+      "id": "body-side",
+      "title": "全身侧面",
+      "description": "补充侧面轮廓与服装版型参考。",
+      "image": null
+    },
+    {
+      "id": "body-back",
+      "title": "全身背面",
+      "description": "补充肩背轮廓与整体比例参考。",
+      "image": null
+    }
+  ],
+  "documents": [
+    {
+      "id": "guide",
+      "title": "衣序使用说明",
+      "description": "从查看七日穿搭，到录入衣物与更新个人档案。",
+      "path": "documents/guide.md",
+      "format": "markdown",
+      "updatedAt": "2026-11-17"
+    },
+    {
+      "id": "style-notes",
+      "title": "个人风格记录",
+      "description": "留存穿着偏好、试穿反馈和想尝试的方向。",
+      "path": "documents/style-notes.md",
+      "format": "markdown",
+      "updatedAt": null
+    }
+  ],
+  "updatedAt": null
+}

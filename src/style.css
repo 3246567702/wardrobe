@@ -1,14 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap");
 :root {
   font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
-  color: #30392f;
-  background: #f7f6f2;
+  color: var(--ink);
+  background: var(--paper);
+  color-scheme: light;
   font-synthesis: none;
   --ink: #30392f;
   --muted: #84877d;
   --sage: #53654e;
   --line: #e2e3da;
   --paper: #f7f6f2;
+  --panel: #f1f1ea;
+  --panel-soft: #eeeee6;
+  --subtle: #7d8873;
+  --unfilled: #949b89;
+  --photo-surface: #eaece2;
   --serif: "Noto Serif SC", "Songti SC", SimSun, serif;
 }
 * {
